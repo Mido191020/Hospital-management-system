@@ -18,20 +18,20 @@ public:
             int patientAge,int patientPhoneNumber
             ,string patientId,double billAmount)
             :patientName(patientName),
-            patientAddress(patientAddress),
-            healthStatus(healthStatus),
-            gender(gender),patientAge(patientAge),
-            patientPhoneNumber(patientPhoneNumber)
+             patientAddress(patientAddress),
+             healthStatus(healthStatus),
+             gender(gender),patientAge(patientAge),
+             patientPhoneNumber(patientPhoneNumber)
             ,patientId(patientId),
-            billAmount(billAmount),
+             billAmount(billAmount),
              admitDate(std::chrono::steady_clock::now())
-            {
+    {
 
     }
 
     void setPatientName(string s){
-                    patientName=s;
-                             }
+        patientName=s;
+    }
     void setPatientAddress(string s){
         patientAddress=s;
     }
@@ -39,10 +39,10 @@ public:
         healthStatus=s;
     }
     void setPatientGender(string s){
-       gender=s;
+        gender=s;
     }
     void setPatientAge(int s){
-       patientAge=s;
+        patientAge=s;
     }
     void setPatientPhoneNumber(int s){
         patientPhoneNumber=s;
@@ -68,8 +68,8 @@ public:
     string getPatientGender()const{
         return gender;
     }
-   int getPatientAge()const{
-       return patientAge;
+    int getPatientAge()const{
+        return patientAge;
     }
     int getPatientPhoneNumber()const{
         return patientPhoneNumber;
@@ -83,13 +83,13 @@ public:
     void display(){
         cout<<"your information: \n";
         cout<<"Name: "<<getPatientName()<<"\n"
-       <<"Age: "<<getPatientAge()<<"\n"
-        <<"PatientGender: "<<getPatientGender()<<"\n"
-        <<"HealthStatus: "<<getHealthStatus()<<"\n"
-        <<"Address: "<<getPatientAddress()<<"\n"
-        <<"Id: "<<getPatientId()<<"\n"
-        <<"PhoneNumber: "<<getPatientPhoneNumber()<<"\n"
-        <<"bill: "<<getBillAmount()<<"\n";
+            <<"Age: "<<getPatientAge()<<"\n"
+            <<"PatientGender: "<<getPatientGender()<<"\n"
+            <<"HealthStatus: "<<getHealthStatus()<<"\n"
+            <<"Address: "<<getPatientAddress()<<"\n"
+            <<"Id: "<<getPatientId()<<"\n"
+            <<"PhoneNumber: "<<getPatientPhoneNumber()<<"\n"
+            <<"bill: "<<getBillAmount()<<"\n";
     }
     void editPatientInformation(){
         int choice;
@@ -119,7 +119,7 @@ public:
                 setPatientAge(s);
             }
             if (choice==4){
-               int s;
+                int s;
                 cin>>s;
                 setPatientPhoneNumber(s);
             }
@@ -139,7 +139,7 @@ public:
                 setPatientId(s);
             }
             if (choice==8)break;
-           cin>>choice;
+            cin>>choice;
         } while (choice!=8);
 
     }
@@ -165,7 +165,7 @@ struct node{
 };
 class Hospital{
     int numBeds;
-node*head;
+    node*head;
 public:
     Hospital(){
         numBeds=0;
@@ -207,19 +207,19 @@ public:
         {
             prev->next=curr->next;
         }
-delete curr;
+        delete curr;
         numBeds++;
     }
-   vector<patient>searchPatients(string searchTerm)const{
+    vector<patient>searchPatients(string searchTerm)const{
         vector<patient>result;
         node*curr=head;
-       while (curr!= nullptr){
-           if (curr->patient.getPatientName() == searchTerm || curr->patient.getPatientId()== searchTerm) {
-                    result.push_back(curr->patient);
-           }
-           curr=curr->next;
-    }
-       return result;
+        while (curr!= nullptr){
+            if (curr->patient.getPatientName() == searchTerm || curr->patient.getPatientId()== searchTerm) {
+                result.push_back(curr->patient);
+            }
+            curr=curr->next;
+        }
+        return result;
     }
     void displayPatients()const{
         node*curr=head;
@@ -233,16 +233,110 @@ delete curr;
         }
     }
 };
-void simpleTest1(){
-    Hospital hospital(3);
-    patient p("John Doe", "123 Main St", "critical", "male", 35, 5551234, "P001", 0.0);
-    hospital.addPatient(p);
-    p.display();
-    p.editPatientInformation();
-    p.display();
-    float bill = p.calculateBillAmount();
-    std::cout << "Patient bill amount: $" << bill << std::endl;
-}
+class schedule{
+    int staffId;
+    vector<string>tasks;
+//represents the start and end times of a shift
+    vector<pair<time_t,time_t>>shiftTimes;
+public:
+    schedule(){
+        staffId=0;
+        tasks={" "};
+        shiftTimes = {make_pair(time(nullptr), time(nullptr)), make_pair(time(nullptr), time(nullptr))};
+    }
+    schedule(int staffId,vector<string>tasks,vector<pair<time_t,time_t>>shiftTimes):staffId(staffId),tasks(tasks),shiftTimes(shiftTimes){
+    }
+    void addTask(const string&task){
+        tasks.push_back(task);
+    }
+    void addShift(const pair<time_t,time_t>&shiftTime){
+        shiftTimes.push_back(shiftTime);
+    }
+    vector<string >getTasks(int shiftIndex)const{
+        return tasks;
+    }
+    pair<time_t, time_t> getShiftTimes(int shiftIndex) const{
+        if (shiftIndex<0||shiftIndex>=shiftTimes.size()){
+            throw out_of_range("out of bounds \n");
+        }
+
+        return shiftTimes[shiftIndex];
+    }
+    int getShiftCount() const {
+        return shiftTimes.size();
+    }
+};
+class staff{
+private:
+    string staffName,position,email,phoneNumber;
+    vector<schedule>work;
+public:
+    staff(){
+        staffName="";
+        phoneNumber="";
+        position="";
+        email="";
+    }
+    staff( string staffName,string position,string email,string phoneNumber):staffName(staffName),position(position),email(email),phoneNumber(phoneNumber){
+
+    }
+    //staffName,position,email,phoneNumber
+    void setStaffName(string s){
+        staffName=s;
+    }
+    void setPosition(string s){
+        position=s;
+    }
+    void setEmail(string s){
+        email=s;
+    }
+    void setPhoneNumber(string s){
+        phoneNumber=s;
+    }
+    string getStaffName()const{
+        return staffName;
+    }
+    string getPosition()const{
+        return position;
+    }
+    string getEmail()const{
+        return email;
+    }
+    string getPhoneNumber()const{
+        return phoneNumber;
+    }
+    // Add a new schedule to the work  vector
+    void addSchedule(schedule Schedule){
+        work.push_back(Schedule);
+    }
+    // Remove a schedule from the work schedule vector
+    void removeSchedule(int index) {
+        if(index<0||index>=work.size()){
+            throw out_of_range("out of range\n");
+        }
+        work.erase(work.begin()+ index);
+    }
+    // Calculate the total number of hours the staff member has worked
+    double calculateHoursWorked() const {
+        double totalHours = 0.0;
+        for (const schedule &Schedule : work) {
+            for (int i = 0; i < Schedule.getShiftCount(); i++) {
+                pair<time_t, time_t> shiftTimes = Schedule.getShiftTimes(i);
+                time_t startTime = shiftTimes.first;
+                time_t endTime = shiftTimes.second;
+                double hours = difftime(endTime, startTime) / (60.0 * 60.0);
+                totalHours += hours;
+            }
+        }
+        return totalHours;
+    }
+    double getPaycheck(double payRate){
+        double totalPay=calculateHoursWorked()*payRate;
+        return totalPay;
+    }
+
+
+};
 int main() {
 
 }
